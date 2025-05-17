@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FilePdf, FileSpreadsheet } from "lucide-react";
+import { FileText, File } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface ExportReportModalProps {
@@ -67,7 +66,7 @@ export const ExportReportModal = ({ isOpen, onClose }: ExportReportModalProps) =
                 }`}
                 onClick={() => setFileType("pdf")}
               >
-                <FilePdf size={24} className={fileType === "pdf" ? "text-cyber-blue" : "text-gray-400"} />
+                <FileText size={24} className={fileType === "pdf" ? "text-cyber-blue" : "text-gray-400"} />
                 <span className={fileType === "pdf" ? "text-cyber-blue" : "text-gray-400"}>PDF</span>
               </div>
               
@@ -79,7 +78,7 @@ export const ExportReportModal = ({ isOpen, onClose }: ExportReportModalProps) =
                 }`}
                 onClick={() => setFileType("csv")}
               >
-                <FileSpreadsheet size={24} className={fileType === "csv" ? "text-cyber-blue" : "text-gray-400"} />
+                <File size={24} className={fileType === "csv" ? "text-cyber-blue" : "text-gray-400"} />
                 <span className={fileType === "csv" ? "text-cyber-blue" : "text-gray-400"}>CSV</span>
               </div>
             </div>
