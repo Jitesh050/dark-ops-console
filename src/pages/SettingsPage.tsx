@@ -18,13 +18,16 @@ import {
   Eye, 
   Lock, 
   Save, 
-  Plus
+  Plus,
+  Moon,
+  Sun
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("user");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const { theme, toggleTheme } = useTheme();
   const [notificationSettings, setNotificationSettings] = useState({
     emailAlerts: true,
     pushNotifications: true,
@@ -75,6 +78,14 @@ const SettingsPage = () => {
     toast({
       title: "ML Settings Updated",
       description: "Machine learning parameters have been adjusted."
+    });
+  };
+  
+  const handleThemeToggle = () => {
+    toggleTheme();
+    toast({
+      title: "Theme Updated",
+      description: `Switched to ${theme === 'dark' ? 'light' : 'dark'} theme.`
     });
   };
 
@@ -153,19 +164,38 @@ const SettingsPage = () => {
                 <div className="flex gap-4">
                   <div 
                     className={`w-full p-4 border rounded-md cursor-pointer flex flex-col items-center space-y-2 ${theme === 'dark' ? 'border-cyber-blue bg-cyber-blue/10' : 'border-gray-700 bg-black/20'}`}
-                    onClick={() => setTheme('dark')}
+                    onClick={() => {
+                      if (theme !== 'dark') toggleTheme();
+                    }}
                   >
-                    <div className="h-12 w-12 bg-cyber-dark border border-cyber-blue/40 rounded-md"></div>
+                    <div className="h-12 w-12 flex items-center justify-center bg-cyber-dark border border-cyber-blue/40 rounded-md">
+                      <Moon size={20} className={theme === 'dark' ? 'text-cyber-blue' : 'text-gray-400'} />
+                    </div>
                     <span className={theme === 'dark' ? 'text-cyber-blue' : 'text-gray-400'}>Dark</span>
                   </div>
                   
                   <div 
                     className={`w-full p-4 border rounded-md cursor-pointer flex flex-col items-center space-y-2 ${theme === 'light' ? 'border-cyber-blue bg-cyber-blue/10' : 'border-gray-700 bg-black/20'}`}
-                    onClick={() => setTheme('light')}
+                    onClick={() => {
+                      if (theme !== 'light') toggleTheme();
+                    }}
                   >
-                    <div className="h-12 w-12 bg-gray-100 border border-gray-300 rounded-md"></div>
+                    <div className="h-12 w-12 flex items-center justify-center bg-gray-100 border border-gray-300 rounded-md">
+                      <Sun size={20} className={theme === 'light' ? 'text-cyber-blue' : 'text-gray-400'} />
+                    </div>
                     <span className={theme === 'light' ? 'text-cyber-blue' : 'text-gray-400'}>Light</span>
                   </div>
+                </div>
+                
+                <div className="flex items-center justify-between mt-4">
+                  <div>
+                    <Label>Toggle Theme</Label>
+                    <p className="text-xs text-gray-400">Switch between light and dark mode</p>
+                  </div>
+                  <Switch 
+                    checked={theme === 'light'}
+                    onCheckedChange={handleThemeToggle}
+                  />
                 </div>
               </div>
             </CardContent>

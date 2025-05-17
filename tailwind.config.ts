@@ -110,6 +110,14 @@ export default {
 				"rotate-slow": {
 					"0%": { transform: "rotate(0deg)" },
 					"100%": { transform: "rotate(360deg)" }
+				},
+				"dash": {
+					"to": { strokeDashoffset: "-20" }
+				},
+				"pulse-fade": {
+					"0%": { opacity: "1", transform: "scale(1)" },
+					"50%": { opacity: "0.5", transform: "scale(1.2)" },
+					"100%": { opacity: "0", transform: "scale(1.5)" }
 				}
 			},
 			animation: {
@@ -119,7 +127,9 @@ export default {
 				"float": "float 6s infinite ease-in-out",
 				"threat-pulse": "threat-pulse 2s infinite",
 				"matrix-fall": "matrix-fall 8s linear infinite",
-				"rotate-slow": "rotate-slow 12s linear infinite"
+				"rotate-slow": "rotate-slow 12s linear infinite",
+				"dash": "dash 20s linear infinite",
+				"pulse-fade": "pulse-fade 2s ease-out infinite"
 			},
 			fontFamily: {
 				mono: ["JetBrains Mono", "monospace"],

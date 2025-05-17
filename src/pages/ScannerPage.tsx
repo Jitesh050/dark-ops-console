@@ -17,8 +17,12 @@ import {
   Play, 
   Download, 
   Wrench,
-  ArrowRight
+  ArrowRight,
+  Database,
+  Code,
+  Zap
 } from "lucide-react";
+import ScannerVisualization from "@/components/scanner/ScannerVisualization";
 
 interface Vulnerability {
   id: string;
@@ -84,6 +88,7 @@ const ScannerPage = () => {
   const [progress, setProgress] = useState(0);
   const [scanComplete, setScanComplete] = useState(false);
   const [currentViewMode, setCurrentViewMode] = useState<"grid" | "list">("list");
+  const [visualizationType, setVisualizationType] = useState<"sql" | "xss" | "mitm" | "idle">("idle");
   
   // Add a new target input
   const addTarget = () => {
@@ -112,6 +117,20 @@ const ScannerPage = () => {
     setScanComplete(false);
     setProgress(0);
     
+    // Determine visualization type based on target URL or random
+    const targetString = targets.join('').toLowerCase();
+    if (targetString.includes('login') || targetString.includes('auth')) {
+      setVisualizationType('sql');
+    } else if (targetString.includes('form') || targetString.includes('input')) {
+      setVisualizationType('xss');
+    } else if (targetString.includes('api') || targetString.includes('data')) {
+      setVisualizationType('mitm');
+    } else {
+      // Randomly select a visualization type
+      const types: Array<"sql" | "xss" | "mitm"> = ['sql', 'xss', 'mitm'];
+      setVisualizationType(types[Math.floor(Math.random() * types.length)]);
+    }
+    
     // Simulate scan progress
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -137,11 +156,55 @@ const ScannerPage = () => {
     }
   };
   
+  // Determine what scan visualization technique to display
+  const getScanTestLabels = () => {
+    return (
+      <div className="grid grid-cols-3 gap-2 w-full mb-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className={`gap-2 ${visualizationType === 'sql' ? 'border-cyber-blue text-cyber-blue' : ''}`}
+          onClick={() => setVisualizationType('sql')}
+        >
+          <Database size={16} />
+          SQL Injection
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className={`gap-2 ${visualizationType === 'xss' ? 'border-cyber-blue text-cyber-blue' : ''}`}
+          onClick={() => setVisualizationType('xss')}
+        >
+          <Code size={16} />
+          XSS Attack
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className={`gap-2 ${visualizationType === 'mitm' ? 'border-cyber-blue text-cyber-blue' : ''}`}
+          onClick={() => setVisualizationType('mitm')}
+        >
+          <Zap size={16} />
+          MITM Attack
+        </Button>
+      </div>
+    );
+  };
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Vulnerability Scanner</h1>
       </div>
+      
+      {/* Scanner Visualization */}
+      <ScannerVisualization 
+        scanType={visualizationType} 
+        isScanning={isScanning} 
+        progress={progress} 
+      />
+      
+      {scanComplete && !isScanning && getScanTestLabels()}
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Scan configuration */}
