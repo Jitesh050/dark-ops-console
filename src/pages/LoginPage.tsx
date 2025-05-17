@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, Mail, Lock } from "lucide-react";
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,10 +21,8 @@ const LoginPage = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -34,13 +30,12 @@ const LoginPage = () => {
     const characters = "アイウエオカキクケコサシスセソタチツテト0123456789";
     const fontSize = 14;
     const columns = Math.floor(canvas.width / fontSize);
-    
+
     // Array to track the Y position of each column
     const drops: number[] = [];
     for (let i = 0; i < columns; i++) {
       drops[i] = Math.floor(Math.random() * -100);
     }
-
     const draw = () => {
       // Semi-transparent overlay to create fade effect
       ctx.fillStyle = "rgba(34, 31, 38, 0.05)";
@@ -54,41 +49,33 @@ const LoginPage = () => {
       for (let i = 0; i < drops.length; i++) {
         // Random character
         const text = characters[Math.floor(Math.random() * characters.length)];
-        
+
         // Draw the character
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        
+
         // Reset if it's at the bottom of the screen or randomly
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        
+
         // Move drop down
         drops[i]++;
       }
     };
-
     const intervalId = setInterval(draw, 50);
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       clearInterval(intervalId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  return (
-    <div className="h-screen w-full flex items-center justify-center relative overflow-hidden">
+  return <div className="h-screen w-full flex items-center justify-center relative overflow-hidden">
       {/* Animated Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-0"
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
       
       {/* Login Form */}
       <div className="z-10 w-full max-w-md">
@@ -99,9 +86,7 @@ const LoginPage = () => {
             </div>
           </div>
           
-          <h1 className="text-center text-2xl font-bold font-mono tracking-tight text-cyber-blue mb-2">
-            CyberPulse
-          </h1>
+          <h1 className="text-center text-2xl font-bold font-mono tracking-tight text-cyber-blue mb-2">Sentaiii</h1>
           <p className="text-center text-sm text-gray-400 mb-6">
             Advanced Penetration Testing Platform
           </p>
@@ -120,15 +105,7 @@ const LoginPage = () => {
                     <Label htmlFor="email">Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="email"
-                        type="email"
-                        className="pl-10 cyber-input"
-                        placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
+                      <Input id="email" type="email" className="pl-10 cyber-input" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                   </div>
                   
@@ -136,25 +113,13 @@ const LoginPage = () => {
                     <Label htmlFor="password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="password"
-                        type="password"
-                        className="pl-10 cyber-input"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
+                      <Input id="password" type="password" className="pl-10 cyber-input" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
                     </div>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="remember"
-                        className="h-4 w-4 rounded border-gray-300 text-cyber-blue focus:ring-cyber-blue"
-                      />
+                      <input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-300 text-cyber-blue focus:ring-cyber-blue" />
                       <label htmlFor="remember" className="text-sm text-gray-400">
                         Remember me
                       </label>
@@ -164,10 +129,7 @@ const LoginPage = () => {
                     </a>
                   </div>
                   
-                  <Button
-                    type="submit"
-                    className="w-full text-black bg-cyber-blue hover:bg-cyber-blue/90"
-                  >
+                  <Button type="submit" className="w-full text-black bg-cyber-blue hover:bg-cyber-blue/90">
                     Log In
                   </Button>
                 </div>
@@ -176,19 +138,13 @@ const LoginPage = () => {
             
             {/* Sign Up Tab */}
             <TabsContent value="signup">
-              <form onSubmit={(e) => e.preventDefault()}>
+              <form onSubmit={e => e.preventDefault()}>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="signup-email">Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="signup-email"
-                        type="email"
-                        className="pl-10 cyber-input"
-                        placeholder="you@example.com"
-                        required
-                      />
+                      <Input id="signup-email" type="email" className="pl-10 cyber-input" placeholder="you@example.com" required />
                     </div>
                   </div>
                   
@@ -196,13 +152,7 @@ const LoginPage = () => {
                     <Label htmlFor="signup-password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="signup-password"
-                        type="password"
-                        className="pl-10 cyber-input"
-                        placeholder="••••••••"
-                        required
-                      />
+                      <Input id="signup-password" type="password" className="pl-10 cyber-input" placeholder="••••••••" required />
                     </div>
                   </div>
                   
@@ -210,13 +160,7 @@ const LoginPage = () => {
                     <Label htmlFor="confirm-password">Confirm Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="confirm-password"
-                        type="password"
-                        className="pl-10 cyber-input"
-                        placeholder="••••••••"
-                        required
-                      />
+                      <Input id="confirm-password" type="password" className="pl-10 cyber-input" placeholder="••••••••" required />
                     </div>
                   </div>
                   
@@ -233,8 +177,6 @@ const LoginPage = () => {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default LoginPage;
