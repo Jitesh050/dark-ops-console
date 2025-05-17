@@ -8,6 +8,9 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import NetworkPage from "./pages/NetworkPage";
 import ScannerPage from "./pages/ScannerPage";
+import ReportsPage from "./pages/ReportsPage";
+import SettingsPage from "./pages/SettingsPage";
+import MonitoringPage from "./pages/MonitoringPage";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./components/layout/AppLayout";
 
@@ -26,6 +29,9 @@ const App = () => (
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/network" element={<NetworkPage />} />
             <Route path="/scanner" element={<ScannerPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/monitoring" element={<MonitoringPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

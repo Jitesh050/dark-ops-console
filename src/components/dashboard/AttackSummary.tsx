@@ -1,20 +1,76 @@
 
 import { useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Terminal, 
+  ShieldAlert, 
+  Webhook, 
+  BarChart, 
+  AlertTriangle, 
+  CircleX 
+} from "lucide-react";
 
 interface AttackData {
   category: string;
   count: number;
   color: string;
+  icon: any; // Lucide icon component
+  risk: "high" | "medium" | "low";
+  description: string;
 }
 
-// Mock data for the pie chart
+// Enhanced attack data for the summary
 const attackData: AttackData[] = [
-  { category: "SQL Injection", count: 37, color: "#0FA0CE" },
-  { category: "XSS", count: 24, color: "#8B5CF6" },
-  { category: "CSRF", count: 12, color: "#F97316" },
-  { category: "DDoS", count: 18, color: "#EA384C" },
-  { category: "Other", count: 9, color: "#10B981" }
+  { 
+    category: "SQL Injection", 
+    count: 37, 
+    color: "#0FA0CE", 
+    icon: Terminal,
+    risk: "high",
+    description: "Malicious SQL code insertion attempts"
+  },
+  { 
+    category: "XSS", 
+    count: 24, 
+    color: "#8B5CF6", 
+    icon: Webhook,
+    risk: "medium",
+    description: "Cross-site scripting in form inputs"
+  },
+  { 
+    category: "CSRF", 
+    count: 12, 
+    color: "#F97316", 
+    icon: AlertTriangle,
+    risk: "medium",
+    description: "Cross-site request forgery attempts"
+  },
+  { 
+    category: "DDoS", 
+    count: 18, 
+    color: "#EA384C", 
+    icon: BarChart,
+    risk: "high",
+    description: "Distributed denial of service attacks"
+  },
+  { 
+    category: "Auth Bypass", 
+    count: 15, 
+    color: "#D946EF", 
+    icon: ShieldAlert,
+    risk: "high",
+    description: "Authentication bypass attempts"
+  },
+  { 
+    category: "File Inclusion", 
+    count: 8, 
+    color: "#10B981", 
+    icon: CircleX,
+    risk: "low",
+    description: "Remote/local file inclusion attempts"
+  },
 ];
 
 export function AttackSummary() {
@@ -32,8 +88,8 @@ export function AttackSummary() {
     if (!ctx) return;
     
     // Set canvas dimensions
-    canvas.width = 200;
-    canvas.height = 200;
+    canvas.width = 160;
+    canvas.height = 160;
     
     // Draw pie chart
     let startAngle = 0;
@@ -76,30 +132,61 @@ export function AttackSummary() {
     
   }, [totalAttacks]);
   
+  // Helper for risk badge color
+  const getRiskColor = (risk: string) => {
+    switch (risk) {
+      case "high": return "bg-red-500/20 text-red-400 border-red-500/40";
+      case "medium": return "bg-orange-500/20 text-orange-400 border-orange-500/40";
+      case "low": return "bg-blue-500/20 text-blue-400 border-blue-500/40";
+      default: return "bg-gray-500/20 text-gray-400 border-gray-500/40";
+    }
+  };
+  
   return (
     <Card className="cyber-card h-full">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-mono text-gray-300">Attack Summary</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center p-4">
-        <div className="relative w-[200px] h-[200px]">
-          <canvas ref={canvasRef} />
+      <CardContent className="flex flex-col p-4 gap-4">
+        <div className="flex items-center justify-center">
+          <div className="relative w-[160px] h-[160px]">
+            <canvas ref={canvasRef} />
+          </div>
         </div>
         
-        <div className="w-full mt-4 grid grid-cols-1 gap-2">
-          {attackData.map((item, index) => (
-            <div key={index} className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div 
-                  className="w-3 h-3 rounded-sm mr-2" 
-                  style={{ backgroundColor: item.color }}
-                />
-                <span className="text-sm text-gray-300">{item.category}</span>
-              </div>
-              <span className="text-sm font-mono text-gray-400">{item.count}</span>
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="flex-1 pr-4 max-h-[180px]">
+          <div className="space-y-3">
+            {attackData.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <div key={index} className="flex items-center gap-3 p-2 rounded-md hover:bg-cyber-blue/5 transition-colors">
+                  <div
+                    className="w-8 h-8 rounded-md flex items-center justify-center"
+                    style={{ backgroundColor: `${item.color}20` }}
+                  >
+                    <IconComponent size={16} style={{ color: item.color }} />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium text-sm text-gray-300">{item.category}</h4>
+                        <Badge className={getRiskColor(item.risk)}>
+                          {item.risk}
+                        </Badge>
+                      </div>
+                      <span className="text-sm font-mono text-gray-400">{item.count}</span>
+                    </div>
+                    
+                    <p className="text-xs text-gray-500 mt-0.5 truncate" title={item.description}>
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutDashboard, Network, Shield, Menu, X, LogOut, Bell } from "lucide-react";
+import { LayoutDashboard, Network, Shield, Menu, X, LogOut, Bell, BarChart, Settings, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +12,9 @@ const AppLayout = () => {
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "Network", path: "/network", icon: Network },
     { name: "Scanner", path: "/scanner", icon: Shield },
+    { name: "Reports", path: "/reports", icon: BarChart },
+    { name: "Monitoring", path: "/monitoring", icon: Activity },
+    { name: "Settings", path: "/settings", icon: Settings },
   ];
 
   return (
