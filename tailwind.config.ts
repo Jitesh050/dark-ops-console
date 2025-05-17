@@ -134,8 +134,16 @@ export default {
 			fontFamily: {
 				mono: ["JetBrains Mono", "monospace"],
 				sans: ["Inter", "sans-serif"]
-			}
+			},
+			// Add opacity to the safelist to fix the issue with to-cyber-purple/2
+			safelist: [
+				'from-cyber-blue/5',
+				'from-cyber-blue/10',
+				'to-cyber-purple/2',
+				'to-cyber-purple/5'
+			]
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
